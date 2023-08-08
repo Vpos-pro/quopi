@@ -5536,46 +5536,52 @@ let qrCodeImage = document.querySelector('.qr-code');
 
 
 
-var copyButton = document.getElementById('copyButton');
+function copyToClipboard(text) {
+    // Try using the Clipboard API first
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            console.log('Text copied to clipboard');
+        }).catch(err => {
+            console.error('Error in copying text: ', err);
+        });
+    } else {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            console.log('Text copied to clipboard');
+        } catch (err) {
+            console.error('Error in copying text: ', err);
+        }
+        document.body.removeChild(textarea);
+    }
+}
 
-copyButton.addEventListener('click', function() {
+document.getElementById('copyButton').addEventListener('click', function() {
     const textToCopy = this.getAttribute('data-clipboard-text');
-
-    // Add click effect: Change background color
     this.style.backgroundColor = '#ddd'; // Change to any color you want
+    copyToClipboard(textToCopy);
 
-    navigator.clipboard.writeText(textToCopy)
-    .then(() => {
-        console.log('Text copied to clipboard');
-
-        // After 200 milliseconds, remove the background color effect
-        setTimeout(() => {
-            this.style.backgroundColor = ''; 
-        }, 200);
-    })
-    .catch(err => {
-        console.error('Error in copying text: ', err);
-    });
+    // After 200 milliseconds, remove the background color effect
+    setTimeout(() => {
+        this.style.backgroundColor = ''; 
+    }, 200);
 });
 
 document.getElementById('copyButton2').addEventListener('click', function() {
     const textToCopy = document.getElementById('deposit-wallets').textContent;
-
     this.style.backgroundColor = '#ddd'; // Change to any color you want
+    copyToClipboard(textToCopy);
 
-    navigator.clipboard.writeText(textToCopy)
-    .then(() => {
-        console.log('Text copied to clipboard');
-
-        // After 200 milliseconds, remove the background color effect
-        setTimeout(() => {
-            this.style.backgroundColor = ''; 
-        }, 200);
-    })
-    .catch(err => {
-        console.error('Error in copying text: ', err);
-    });
+    // After 200 milliseconds, remove the background color effect
+    setTimeout(() => {
+        this.style.backgroundColor = ''; 
+    }, 200);
 });
+
 
 
 
