@@ -5506,7 +5506,7 @@ let selectedCoin = getUrlParameter('selectedCoin');
 
 // Define the receiving addresses for each coin
 let receivingAddresses = {
-  'BTC': '3349DyTgzdgNaMCSvvvnRxdf87vzJ1rRBK',
+  'BTC': '3ESMapBmNE6qpWEsfX7DxYGSRiRMJDpzgo',
   'USDT': 'TReX1BMoQFM6A1SvgVGSERa9FRnm7J2EuS',
   'XRP': 'rM5ZkAZX72TwCtV4QUTn7XqUN2mLnwCmuc',
   'DOGE': 'DJwahutpc148n26yn1DqZbvJqXahhy9cn3',
@@ -5549,8 +5549,27 @@ copyButton.addEventListener('click', function() {
         console.log('Text copied to clipboard');
 
         // After 200 milliseconds, remove the background color effect
-        setTimeout(function() {
-            copyButton.style.backgroundColor = ''; 
+        setTimeout(() => {
+            this.style.backgroundColor = ''; 
+        }, 200);
+    })
+    .catch(err => {
+        console.error('Error in copying text: ', err);
+    });
+});
+
+document.getElementById('copyButton2').addEventListener('click', function() {
+    const textToCopy = document.getElementById('deposit-wallets').textContent;
+
+    this.style.backgroundColor = '#ddd'; // Change to any color you want
+
+    navigator.clipboard.writeText(textToCopy)
+    .then(() => {
+        console.log('Text copied to clipboard');
+
+        // After 200 milliseconds, remove the background color effect
+        setTimeout(() => {
+            this.style.backgroundColor = ''; 
         }, 200);
     })
     .catch(err => {
@@ -5559,22 +5578,6 @@ copyButton.addEventListener('click', function() {
 });
 
 
-
-
-
-
-
-document.getElementById('copyButton2').addEventListener('click', function() {
-    const textToCopy = this.getAttribute('data-clipboard-text');
-
-    navigator.clipboard.writeText(textToCopy)
-    .then(() => {
-        console.log('Text copied to clipboard');
-    })
-    .catch(err => {
-        console.error('Error in copying text: ', err);
-    });
-});
 
 
 </script>
