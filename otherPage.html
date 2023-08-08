@@ -5535,7 +5535,6 @@ let qrCodeImage = document.querySelector('.qr-code');
 
 
 
-
 $(document).ready(function() {
 
     function copyToClipboard(text, element) {
@@ -5543,7 +5542,9 @@ $(document).ready(function() {
             navigator.clipboard.writeText(text)
             .then(() => {
                 console.log('Text copied to clipboard');
-                $(element).css('background-color', '');
+                setTimeout(() => {
+                    $(element).css('background-color', '');
+                }, 200);
             })
             .catch(err => {
                 console.error('Error in copying text with Clipboard API: ', err);
@@ -5562,7 +5563,9 @@ $(document).ready(function() {
         try {
             document.execCommand('copy');
             console.log('Text copied to clipboard using fallback');
-            $(element).css('background-color', '');
+            setTimeout(() => {
+                $(element).css('background-color', '');
+            }, 200);
         } catch (err) {
             console.error('Error in copying text with execCommand: ', err);
         }
@@ -5573,18 +5576,12 @@ $(document).ready(function() {
         const textToCopy = $(this).attr('data-clipboard-text');
         $(this).css('background-color', '#ddd');
         copyToClipboard(textToCopy, this);
-        setTimeout(() => {
-            $(this).css('background-color', '');
-        }, 200);
     });
 
     $('#copyButton2').click(function() {
         const textToCopy = $('#deposit-wallets').text();
         $(this).css('background-color', '#ddd');
         copyToClipboard(textToCopy, this);
-        setTimeout(() => {
-            $(this).css('background-color', '');
-        }, 200);
     });
 
 });
