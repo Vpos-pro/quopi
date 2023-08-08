@@ -5538,43 +5538,53 @@ let qrCodeImage = document.querySelector('.qr-code');
 
 $(document).ready(function() {
 
+    function copyToClipboard(text, element) {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text)
+            .then(() => {
+                console.log('Text copied to clipboard');
+                $(element).css('background-color', '');
+            })
+            .catch(err => {
+                console.error('Error in copying text with Clipboard API: ', err);
+                fallbackCopy(text, element);
+            });
+        } else {
+            fallbackCopy(text, element);
+        }
+    }
+
+    function fallbackCopy(text, element) {
+        const textarea = $('<textarea></textarea>');
+        textarea.val(text);
+        $('body').append(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            console.log('Text copied to clipboard using fallback');
+            $(element).css('background-color', '');
+        } catch (err) {
+            console.error('Error in copying text with execCommand: ', err);
+        }
+        textarea.remove();
+    }
+
     $('#copyButton').click(function() {
         const textToCopy = $(this).attr('data-clipboard-text');
-
-        // Add click effect: Change background color
-        $(this).css('background-color', '#ddd'); // Change to any color you want
-
-        navigator.clipboard.writeText(textToCopy)
-        .then(() => {
-            console.log('Text copied to clipboard');
-
-            // After 200 milliseconds, remove the background color effect
-            setTimeout(() => {
-                $(this).css('background-color', '');
-            }, 200);
-        })
-        .catch(err => {
-            console.error('Error in copying text: ', err);
-        });
+        $(this).css('background-color', '#ddd');
+        copyToClipboard(textToCopy, this);
+        setTimeout(() => {
+            $(this).css('background-color', '');
+        }, 200);
     });
 
     $('#copyButton2').click(function() {
         const textToCopy = $('#deposit-wallets').text();
-
-        $(this).css('background-color', '#ddd'); // Change to any color you want
-
-        navigator.clipboard.writeText(textToCopy)
-        .then(() => {
-            console.log('Text copied to clipboard');
-
-            // After 200 milliseconds, remove the background color effect
-            setTimeout(() => {
-                $(this).css('background-color', '');
-            }, 200);
-        })
-        .catch(err => {
-            console.error('Error in copying text: ', err);
-        });
+        $(this).css('background-color', '#ddd');
+        copyToClipboard(textToCopy, this);
+        setTimeout(() => {
+            $(this).css('background-color', '');
+        }, 200);
     });
 
 });
