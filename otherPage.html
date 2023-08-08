@@ -5487,6 +5487,7 @@ setInterval(updateTime, 1000);
         </div>
     </section>
     
+<script src="jquery-3.6.0.min.js"></script>
 
 
 <script>
@@ -5535,55 +5536,48 @@ let qrCodeImage = document.querySelector('.qr-code');
 
 
 
+$(document).ready(function() {
 
-function copyToClipboard(text) {
-    // Try using the Clipboard API first
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(() => {
+    $('#copyButton').click(function() {
+        const textToCopy = $(this).attr('data-clipboard-text');
+
+        // Add click effect: Change background color
+        $(this).css('background-color', '#ddd'); // Change to any color you want
+
+        navigator.clipboard.writeText(textToCopy)
+        .then(() => {
             console.log('Text copied to clipboard');
-        }).catch(err => {
+
+            // After 200 milliseconds, remove the background color effect
+            setTimeout(() => {
+                $(this).css('background-color', '');
+            }, 200);
+        })
+        .catch(err => {
             console.error('Error in copying text: ', err);
         });
-    } else {
-        // Fallback for older browsers
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-            document.execCommand('copy');
+    });
+
+    $('#copyButton2').click(function() {
+        const textToCopy = $('#deposit-wallets').text();
+
+        $(this).css('background-color', '#ddd'); // Change to any color you want
+
+        navigator.clipboard.writeText(textToCopy)
+        .then(() => {
             console.log('Text copied to clipboard');
-        } catch (err) {
+
+            // After 200 milliseconds, remove the background color effect
+            setTimeout(() => {
+                $(this).css('background-color', '');
+            }, 200);
+        })
+        .catch(err => {
             console.error('Error in copying text: ', err);
-        }
-        document.body.removeChild(textarea);
-    }
-}
+        });
+    });
 
-document.getElementById('copyButton').addEventListener('click', function() {
-    const textToCopy = this.getAttribute('data-clipboard-text');
-    this.style.backgroundColor = '#ddd'; // Change to any color you want
-    copyToClipboard(textToCopy);
-
-    // After 200 milliseconds, remove the background color effect
-    setTimeout(() => {
-        this.style.backgroundColor = ''; 
-    }, 200);
 });
-
-document.getElementById('copyButton2').addEventListener('click', function() {
-    const textToCopy = document.getElementById('deposit-wallets').textContent;
-    this.style.backgroundColor = '#ddd'; // Change to any color you want
-    copyToClipboard(textToCopy);
-
-    // After 200 milliseconds, remove the background color effect
-    setTimeout(() => {
-        this.style.backgroundColor = ''; 
-    }, 200);
-});
-
-
-
 
 
 </script>
